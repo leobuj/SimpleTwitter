@@ -2,8 +2,13 @@ package com.codepath.apps.restclienttemplate.models;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
+@Parcel
 public class User {
+
+    // Empty constructor for the Parceler library
+    public User() {}
 
     public String name;
     public String screenName;
