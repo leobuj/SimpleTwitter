@@ -53,7 +53,6 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.Viewholder
         return tweets.size();
     }
 
-
     // Define a viewholder
     public class Viewholder extends RecyclerView.ViewHolder{
 
@@ -71,7 +70,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.Viewholder
 
         }
 
-        public void bind(Tweet tweet){
+        public void bind(Tweet tweet){ // helped to onBindViewholder
             tvBody.setText(tweet.body);
             tvScreenName.setText(tweet.user.screenName);
             Glide.with(context).load(tweet.user.profileImageUrl).into(ivPofileImage);
@@ -80,4 +79,13 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.Viewholder
         }
     }
 
+    // Two methods used in implementing scroll up to refresh
+    public void clear(){
+        tweets.clear();
+        notifyDataSetChanged();
+    }
+    public void addAll(List<Tweet> list){
+        tweets.addAll(list);
+        notifyDataSetChanged();
+    }
 }

@@ -23,6 +23,7 @@ import okhttp3.Headers;
     EditText etCompose;
     Button btnTweet;
 
+
     TwitterClient client;
     final String TAG = "ComposeActivity.java";
 
@@ -39,12 +40,11 @@ import okhttp3.Headers;
         etCompose = findViewById(R.id.etCompose);
         btnTweet = findViewById(R.id.btnTweet);
 
+
         // Set Click Listener on button
         btnTweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
 
                 String tweetContent = etCompose.getText().toString();   // gets text of what the user wrote
                 if (tweetContent.isEmpty()){
