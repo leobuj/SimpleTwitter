@@ -13,6 +13,8 @@ public class User {
     public String name;
     public String screenName;
     public String profileImageUrl;
+    public String twitterHandle;
+    public String tweetID;
 
     public static User fromJson(JSONObject jsonObject) throws JSONException {
 
@@ -20,6 +22,8 @@ public class User {
         user.name = jsonObject.getString("name");
         user.screenName = jsonObject.getString("screen_name");
         user.profileImageUrl = jsonObject.getString("profile_image_url_https");
+        user.twitterHandle = jsonObject.getString("screen_name");
+        user.tweetID = jsonObject.getString("id_str");
 
         return user;
     }

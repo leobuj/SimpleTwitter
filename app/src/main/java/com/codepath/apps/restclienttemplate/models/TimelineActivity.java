@@ -31,7 +31,7 @@ import java.util.List;
 
 import okhttp3.Headers;
 
-public class TimelineActivity extends AppCompatActivity {
+public class TimelineActivity extends AppCompatActivity implements TweetsAdapter.onClickListener{
 
     public static final String TAG = "TimelineActivity";
     private final int REQUEST_CODE = 20;
@@ -41,6 +41,7 @@ public class TimelineActivity extends AppCompatActivity {
     RecyclerView rvTweets;
     List<Tweet> tweets;
     TweetsAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +63,7 @@ public class TimelineActivity extends AppCompatActivity {
         rvTweets = findViewById(R.id.rvTweets);
         // Initialize the list of tweets and adapter
         tweets = new ArrayList<>();
-        adapter = new TweetsAdapter(this, tweets);
+        adapter = new TweetsAdapter(this, tweets, this);
         // Recycler View setup; layout manager and adapter
         rvTweets.setLayoutManager(new LinearLayoutManager(this));
         rvTweets.setAdapter(adapter);
@@ -82,6 +83,32 @@ public class TimelineActivity extends AppCompatActivity {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
+
+
+//        TweetsAdapter.onClickListener onClickListener = new TweetsAdapter.onClickListener(){
+//            @Override
+//            public void onClickLike(int position) {
+//                final Tweet likedTweet = tweets.get(position);
+//
+//                Log.i(TAG, "INSIDE OF onClickLike ~~~~~~~~");
+//
+//                client.LikeTweet(likedTweet.tweetID, new JsonHttpResponseHandler() {
+//                    @Override
+//                    public void onSuccess(int statusCode, Headers headers, JSON json) {
+//                        Log.i(TAG, "liked tweet says:" + likedTweet.body);
+//
+//                    }
+//
+//                    @Override
+//                    public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+//                        Log.e(TAG, "On failure to like tweet", throwable);
+//                    }
+//                });}
+//
+//        };
+
+
+
     }
 
     private void populateHomeTimeline() {
@@ -137,6 +164,8 @@ public class TimelineActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+
+
     }
 
     @Override
@@ -180,4 +209,23 @@ public class TimelineActivity extends AppCompatActivity {
         });
     }
 
+
+    @Override
+    public void onClickLike(int position) {
+        Log.d(TAG, "onClickLike: " + position);
+        Tweet likedTweet = tweets.get(position);
+
+        client.LikeTweet(likedTweet.tweetID, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                Log.d(TAG, "onClickLike SUCCESS " + "TWEET LIKED!");
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                Log.e(TAG, "On failure to like tweet " + response, throwable);
+            }
+        });
+    }
 }

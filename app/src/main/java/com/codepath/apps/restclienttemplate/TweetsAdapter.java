@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,8 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.Viewholder> {
@@ -22,10 +21,16 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.Viewholder
     // Pass in context and lists of tweets
     Context context;
     List<Tweet> tweets;
+    onClickListener onClickListener;
 
-    public TweetsAdapter(Context context, List<Tweet> tweets){
+    public interface onClickListener{
+        void onClickLike(int position);
+    }
+
+    public TweetsAdapter(Context context, List<Tweet> tweets, onClickListener onClickListener){
         this.context = context;
         this.tweets = tweets;
+        this.onClickListener = onClickListener;
 
     }
 
@@ -61,6 +66,9 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.Viewholder
         TextView tvScreenName;
         TextView tvTimestamp;
         ImageView ivImage;
+        ImageView ivLike;
+        TextView tvTwitterHandle;
+        Button btnLike;
 
         public Viewholder(@NonNull View itemView) {
             super(itemView);
@@ -69,24 +77,36 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.Viewholder
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
             tvTimestamp = itemView.findViewById(R.id.tvTimestamp);
             ivImage = itemView.findViewById(R.id.tweetImage);
+            tvTwitterHandle = itemView.findViewById(R.id.tvTwitterHandle);
+            ivLike = itemView.findViewById(R.id.ivLike);
+
 
         }
 
         public void bind(Tweet tweet){ // helped to onBindViewholder
+
+
+            ivLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onClickListener.onClickLike(getAdapterPosition());
+                }
+            });
+
             tvBody.setText(tweet.body);
             tvScreenName.setText(tweet.user.screenName);
-
+            tvTwitterHandle.setText("@"+tweet.user.twitterHandle);
+            tvTimestamp.setText(tweet.getRelativeTimeAgo(tweet.createdAt));
 //            Glide.with(context).load(tweet.user.profileImageUrl).into(ivPofileImage);
             Glide.with(context)
                     .load(tweet.user.profileImageUrl)
                     .circleCrop()
                     .into(ivPofileImage);
 
-            tvTimestamp.setText(tweet.getRelativeTimeAgo(tweet.createdAt));
+
             Glide.with(context)
                     .load(tweet.https_url)
                     .into(ivImage);
-
 
 
         }
