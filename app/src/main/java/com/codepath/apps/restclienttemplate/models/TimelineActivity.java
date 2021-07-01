@@ -215,6 +215,8 @@ public class TimelineActivity extends AppCompatActivity implements TweetsAdapter
         Log.d(TAG, "onClickLike: " + position);
         Tweet likedTweet = tweets.get(position);
 
+
+
         client.LikeTweet(likedTweet.tweetID, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
@@ -225,6 +227,26 @@ public class TimelineActivity extends AppCompatActivity implements TweetsAdapter
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
                 Log.e(TAG, "On failure to like tweet " + response, throwable);
+            }
+        });
+    }
+
+    @Override
+    public void onClickRetweet(int position) {
+        Log.d(TAG, "onClickRetweet: " + position);
+        Tweet likedTweet = tweets.get(position);
+
+        client.RetweetTweet(likedTweet.tweetID, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                Log.d(TAG, "onClickLike SUCCESS " + "TWEET RETWEETED!");
+
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                Log.e(TAG, "On failure to RetweetTweet " + response, throwable);
             }
         });
     }

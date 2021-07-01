@@ -25,6 +25,7 @@ public class Tweet {
     public User user;
     public String https_url;
     public long tweetID;
+    public boolean liked;
 
     private static final int SECOND_MILLIS = 1000;
     private static final int MINUTE_MILLIS = 60 * SECOND_MILLIS;
@@ -40,6 +41,7 @@ public class Tweet {
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
         tweet.tweetID = jsonObject.getLong("id");
+        tweet.liked = jsonObject.getBoolean("favorited");
 
         try {
             tweet.https_url = jsonObject.getJSONObject("entities").getJSONArray("media").getJSONObject(0).getString("media_url_https");

@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.Viewholder
 
     public interface onClickListener{
         void onClickLike(int position);
+        void onClickRetweet(int position);
     }
 
     public TweetsAdapter(Context context, List<Tweet> tweets, onClickListener onClickListener){
@@ -67,18 +69,21 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.Viewholder
         TextView tvTimestamp;
         ImageView ivImage;
         ImageView ivLike;
+        ImageView ivRetweet;
         TextView tvTwitterHandle;
-        Button btnLike;
 
         public Viewholder(@NonNull View itemView) {
             super(itemView);
             ivPofileImage = itemView.findViewById(R.id.ivProfileImage);
+            ivImage = itemView.findViewById(R.id.tweetImage);
+            ivLike = itemView.findViewById(R.id.ivLike);
             tvBody = itemView.findViewById(R.id.tvBody);
+            ivRetweet = itemView.findViewById(R.id.ivRetweet);
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
             tvTimestamp = itemView.findViewById(R.id.tvTimestamp);
-            ivImage = itemView.findViewById(R.id.tweetImage);
             tvTwitterHandle = itemView.findViewById(R.id.tvTwitterHandle);
-            ivLike = itemView.findViewById(R.id.ivLike);
+
+
 
 
         }
@@ -89,15 +94,37 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.Viewholder
             ivLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Glide.with(context)
+                            .load(R.drawable.ic_vector_heart)
+                            .override(70, 80)
+                            .into(ivLike);
                     onClickListener.onClickLike(getAdapterPosition());
                 }
             });
+
+            ivRetweet.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    onClickListener.onClickRetweet(getAdapterPosition());
+                }
+            });
+
+            if(tweet.liked){
+                Glide.with(context)
+                        .load(R.drawable.ic_vector_heart)
+                        .override(70, 70)
+                        .into(ivLike);
+            }
+            else
+                Glide.with(context).load(R.drawable.ic_vector_heart_stroke).override(70,70).into(ivLike);
 
             tvBody.setText(tweet.body);
             tvScreenName.setText(tweet.user.screenName);
             tvTwitterHandle.setText("@"+tweet.user.twitterHandle);
             tvTimestamp.setText(tweet.getRelativeTimeAgo(tweet.createdAt));
-//            Glide.with(context).load(tweet.user.profileImageUrl).into(ivPofileImage);
+
+
             Glide.with(context)
                     .load(tweet.user.profileImageUrl)
                     .circleCrop()
