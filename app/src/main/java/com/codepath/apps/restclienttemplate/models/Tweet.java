@@ -25,6 +25,11 @@ public class Tweet {
     public User user;
     public String https_url;
 
+    private static final int SECOND_MILLIS = 1000;
+    private static final int MINUTE_MILLIS = 60 * SECOND_MILLIS;
+    private static final int HOUR_MILLIS = 60 * MINUTE_MILLIS;
+    private static final int DAY_MILLIS = 24 * HOUR_MILLIS;
+
 
     public static Tweet fromJson(JSONObject jsonObject) throws JSONException {
 
@@ -59,16 +64,45 @@ public class Tweet {
         SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
         sf.setLenient(true);
 
-        String relativeDate = "";
+//        String relativeDate = "";
+//        try {
+//            long dateMillis = sf.parse(rawJsonDate).getTime();
+//            relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
+//                    System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return relativeDate;
+
+
+
+
         try {
-            long dateMillis = sf.parse(rawJsonDate).getTime();
-            relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
-                    System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+            long time = sf.parse(rawJsonDate).getTime();
+            long now = System.currentTimeMillis();
+
+            final long diff = now - time;
+            if (diff < MINUTE_MILLIS) {
+                return "just now";
+            } else if (diff < 2 * MINUTE_MILLIS) {
+                return "1m";
+            } else if (diff < 50 * MINUTE_MILLIS) {
+                return diff / MINUTE_MILLIS + "m";
+            } else if (diff < 90 * MINUTE_MILLIS) {
+                return "1h";
+            } else if (diff < 24 * HOUR_MILLIS) {
+                return diff / HOUR_MILLIS + "h";
+            } else if (diff < 48 * HOUR_MILLIS) {
+                return "1d";
+            } else {
+                return diff / DAY_MILLIS + "d";
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        return relativeDate;
+        return "";
     }
 
 }
