@@ -71,6 +71,14 @@ public class TwitterClient extends OAuthBaseClient {
 		client.post(apiUrl, params,"", handler);
 	}
 
+	public void UnikeTweet(long tweetID,JsonHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("favorites/destroy.json?id=1050118621198921728");
+		// Can specify query string params directly or through RequestParams.
+		RequestParams params = new RequestParams();
+		params.put("id", tweetID);
+		client.post(apiUrl, params,"", handler);
+	}
+
 	public void RetweetTweet(long tweetID,JsonHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("statuses/retweet/:id.json");
 		// Can specify query string params directly or through RequestParams.
@@ -78,8 +86,6 @@ public class TwitterClient extends OAuthBaseClient {
 		params.put("id", tweetID);
 		client.post(apiUrl, params,"", handler);
 	}
-
-
 
 
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint

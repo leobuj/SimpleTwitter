@@ -91,6 +91,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.Viewholder
         public void bind(Tweet tweet){ // helped to onBindViewholder
 
 
+
             ivLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -129,6 +130,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.Viewholder
                     .load(tweet.user.profileImageUrl)
                     .circleCrop()
                     .into(ivPofileImage);
+
 
 
             Glide.with(context)
